@@ -27,25 +27,25 @@ def registration (email,password,url):
     register_btn.click()
    
 
-def login (email,password,url): 
+def login_shop (email,password,url): 
     driver.get (url)
     #2
     my_acc_pg = driver.find_element("id", "menu-item-50")
     my_acc_pg.click()
     #3
-    reg_email_field = driver.find_element("id", "reg_email")
-    reg_email_field.send_keys("J_Smith@testmail.ru")
+    login_field = driver.find_element("id", "username")
+    login_field.send_keys(email)
     #4
-    reg_pass_field = driver.find_element("id", "reg_password")
-    reg_pass_field.send_keys("Test_pass851")
+    pass_field = driver.find_element("id", "password")
+    pass_field.send_keys(password)
     #5 .
     login_btn =driver.find_element("css selector", "login .woocommerce-Button.button")
     login_btn.click()
 
 
 
-registration (email,password,home_url)   
+#registration (email,password,home_url)   
 
-login (email,password,home_url)
+#login (email,password,home_url)
    
 driver.quit()
