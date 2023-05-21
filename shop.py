@@ -94,9 +94,9 @@ def shop_check_price_in_cart(test_css_selector_item, price_cart):
     #5. Перейдите в корзину 
     cart = driver.find_element('css selector', ".wpmenucart-icon-shopping-cart-0")
     cart.click()
-    #6. Используя явное ожидание, проверьте что в Subtotal отобразилась стоимость
+    #6. Используя явное ожидание, проверьте что в Subtotal отобразилась стоимость(с этого момента не проверял, так-как пропали все книги из продажи)
     time.sleep(2)
-    cart_subtotal_price = wait.until(EC.presence_of_element_located ((By.CSS_SELECTOR, '.cart-subtotal .woocommerce-Price-amount.amount')))
+    cart_subtotal_price = wait.until(EC.visibility_of_element_located ((By.CSS_SELECTOR, '.cart-subtotal .woocommerce-Price-amount.amount')))
     print('Subtotal присутствует', cart_subtotal_price)
     #7. Используя явное ожидание, проверьте что в Total отобразилась стоимость
     cart_total_price = wait.until(EC.visibility_of_element_located ((By.CSS_SELECTOR, '.order-total .woocommerce-Price-amount.amount')))
@@ -152,7 +152,7 @@ if __name__ == "__main__":
     #shop_count_of_items_in_a_category(test_css_selector_cat, test_exp_amount_item_int)
     #shop_sort_items()
     #shop_display_discount_item(test_css_selector_item_2, test_exp_old_price, test_exp_new_price)
-    shop_check_price_in_cart(test_css_selector_item_3,test_price_cart)
+    #shop_check_price_in_cart(test_css_selector_item_3,test_price_cart)
     #shop_actions_in_cart()
     #shop_buy_items()
     #driver.quit()
