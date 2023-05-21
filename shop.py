@@ -17,6 +17,9 @@ test_exp_amount_item_int = 5
 test_css_selector_item_2 = '.post-169'
 test_exp_old_price = '₹600.00'
 test_exp_new_price = '₹450.00'
+    #for shop_check_price_in_cart
+test_css_selector_item_3 = ".post-165"
+test_price_cart ='₹350.00'
 
 #=========================================================================================================
 
@@ -25,7 +28,7 @@ def shop_show_page_item(css_selector_item, title_item):
     item =  driver.find_element("css selector", css_selector_item)
     item.click()
     #5 Добавьте тест, что заголовок книги назвается: "HTML5 Forms"
-    content_title = WebDriverWait(driver, 5).until(EC.text_to_be_present_in_element((By.CSS_SELECTOR,'.product_title.entry-title'),title))
+    content_title = WebDriverWait(driver, 5).until(EC.text_to_be_present_in_element((By.CSS_SELECTOR,'.product_title.entry-title'),title_item))
     print('Заголовок книги "'+ title_item +'":', content_title)
 
 
@@ -75,24 +78,33 @@ def shop_display_discount_item(css_selector_item, exp_old_price, exp_new_price):
     close_view.click()
 
 
-def shop_check_price_in_cart():
-    pass
-    #3. Добавьте в корзину книгу "HTML5 WebApp Development" # см. комментарии в самом низу
+def shop_check_price_in_cart(test_css_selector_item, price_cart):
+    wait = WebDriverWait(driver, 10)
+    #3. Добавьте в корзину книгу "HTML5 WebApp Development"
         # если эта книга будет out of stock - тогда вместо неё добавьте книгу HTML5 Forms и выполните тесты по аналогии
         # если все книги будут out of stock - тогда пропустите это и следующие два задания
-
-    #4. Добавьте тест, что возле коризны(вверху справа) количество товаров = "1 Item", а стоимость = "₹180.00" • Используйте для проверки assert
-
-    #5. Перейдите в корзину
-
+    add_to_cart_btn = driver.find_element('css selector', (test_css_selector_item + ' .add_to_cart_button'))
+    add_to_cart_btn.click()
+    time.sleep(2)
+    #4. Добавьте тест, что возле коризны(вверху справа) количество товаров = "1 Item", а стоимость = "₹180.00" • Используйте для проверки assert 
+    cart_content_amount = driver.find_element('css selector', ".wpmenucartli .cartcontents")
+    cart_content_price = driver.find_element('css selector', ".wpmenucart-contents .amount")
+    assert cart_content_amount.text == "1 Item"
+    assert cart_content_price.text == price_cart
+    #5. Перейдите в корзину 
+    cart = driver.find_element('css selector', ".wpmenucart-icon-shopping-cart-0")
+    cart.click()
     #6. Используя явное ожидание, проверьте что в Subtotal отобразилась стоимость
-
+    time.sleep(2)
+    cart_subtotal_price = wait.until(EC.presence_of_element_located ((By.CSS_SELECTOR, '.cart-subtotal .woocommerce-Price-amount.amount')))
+    print('Subtotal присутствует', cart_subtotal_price)
     #7. Используя явное ожидание, проверьте что в Total отобразилась стоимость
-
-
+    cart_total_price = wait.until(EC.visibility_of_element_located ((By.CSS_SELECTOR, '.order-total .woocommerce-Price-amount.amount')))
+    print('Total присутствует', cart_total_price)
 
 def shop_actions_in_cart():
     pass
+    # Иногда, даже явные ожидания не помогают избежать ошибки при нахождении элемента, этот сценарий один из таких, используйте time.sleep()
     # 1. Откройте https://practice.automationtesting.in/ # в этом тесте логиниться не нужно
     # 2. Нажмите на вкладку "Shop"
     # 3. Добавьте в корзину книги "HTML5 WebApp Development" и "JS Data Structures and Algorithm"
@@ -140,7 +152,7 @@ if __name__ == "__main__":
     #shop_count_of_items_in_a_category(test_css_selector_cat, test_exp_amount_item_int)
     #shop_sort_items()
     #shop_display_discount_item(test_css_selector_item_2, test_exp_old_price, test_exp_new_price)
-    #shop_check_price_in_cart()
+    shop_check_price_in_cart(test_css_selector_item_3,test_price_cart)
     #shop_actions_in_cart()
     #shop_buy_items()
     #driver.quit()
